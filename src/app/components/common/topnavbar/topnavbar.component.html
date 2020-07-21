@@ -1,0 +1,23 @@
+<div class="row border-bottom" style="margin-right: 0 !important;
+                                      margin-left:0 !important;color:black;">
+    <nav class="nav" role="navigation" style="margin-bottom: 0;padding: 15px 24px;padding-bottom: 0;background: #ffffff;">
+        <div style="width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;">
+            <!-- <span style="font-size: 20px;font-weight: 600;color: #282C3B;" *ngIf="obj.parentPageTitle">{{obj.currentPageTitle | translate}}</span> -->
+            <div class="top-nav-left">
+
+
+                <nz-breadcrumb [nzAutoGenerate]="true">
+                    <nz-breadcrumb-item>
+                        首页
+                    </nz-breadcrumb-item>
+                </nz-breadcrumb>
+                <p *ngIf="currentUrl" style="font-size: 20px;font-weight: 600;color: #282C3B;margin-bottom: 0;">
+                    {{currentUrl}}222</p>
+
+            </div>
+        </div>
+    </nav>
+</div>

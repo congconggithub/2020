@@ -1,0 +1,55 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+  <div class="sidebar-collapse">
+    <ul class="nav metismenu" id="side-menu">
+      <li class="nav-header">
+        <div class="profile-element" dropdown>
+          <a class="languageSwitch" dropdownToggle>
+            {{'language_switch_label'}}
+          </a>
+          <ul class="animated fadeInRight dropdown-menu" *dropdownMenu>
+            <li (click)="switchLanguage('zh')"><a><img src="/assets/flags/16/China.png"> 中文</a></li>
+            <li (click)="switchLanguage('en')"><a><img src="/assets/flags/16/United-States.png">English</a></li>
+            <li (click)="switchLanguage('ja')"><a><img src="/assets/flags/16/Japan.png">日本语</a></li>
+          </ul>
+        </div>
+        <div class="logo-element">
+          PI
+        </div>
+      </li>
+
+      <!-- <li routerLinkActive="active">
+          <a [routerLink]="['/homepage/homepage']"><i class="fa fa-home" ></i>
+            <span class="nav-label">主页</span></a>
+      </li> -->
+      <li [ngClass]="{active: activeRoute('/sales/sales-records')}"  >
+        <a [routerLink]="['/sales/sales-records']"><i class="fa fa-list"></i>
+          <span class="nav-label">项目销售记录</span></a>
+      </li>
+      <li routerLinkActive="active" >
+        <a href="#/basic/users"><i class="fa fa-cogs"></i> <span class="nav-label">基础设置</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('basic')}">
+          <li routerLinkActive="active"><a routerLink="/basic/users" routerLinkActive="active" >用户</a></li>
+          <li routerLinkActive="active"><a routerLink="/basic/projects" routerLinkActive="active" >项目</a></li>
+          <li routerLinkActive="active"><a routerLink="/basic/product" routerLinkActive="active" >产品</a></li>
+          <li routerLinkActive="active"><a routerLink="/basic/customer" routerLinkActive="active" >客户</a></li>
+<!--          <li *ngxPermissionsOnly="['SUPER_ADMIN', 'ADMIN']" routerLinkActive="active"><a routerLink="/basic/quota" routerLinkActive="active" >定额</a></li>-->
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div style="position: absolute; bottom: 90px; margin-left: 28px;">
+  <a [routerLink]="['/home-page']" style="margin: 0 auto;color: #a7b1c2;font-size: 20px;">
+    <i class="fa fa-home"></i>
+  </a>
+</div>
+
+<div style="position: absolute; bottom: 55px; margin-left: 28px;">
+</div>
+
+<div style="position: absolute; bottom: 20px; margin-left: 15px;">
+  <a class="minimalize-styl-2 btn btn-primary " (click)="toggleNavigation()"
+     style="margin: 0 auto;"><i class="fa fa-bars"></i>
+  </a>
+</div>
+
