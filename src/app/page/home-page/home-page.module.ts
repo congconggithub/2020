@@ -3,13 +3,16 @@ import {BasicLayoutComponent} from '../../components/common/basicLayout/basicLay
 // import {SharedModule} from '../../shared.module';
 import {RouterModule, Routes} from '@angular/router';
 // import {NzToolTipModule} from 'ng-zorro-antd';
+import {NgZorroAntdModule} from 'ng-zorro-antd';
+
 import { HomePageComponent } from './home-page.component';
-// import { ImageCropperModule } from 'ngx-image-cropper';
+import { LayoutModule } from '../../components/common/layout.module';
+import { CommonModule , DatePipe} from '@angular/common';
 
 const Router: Routes = [
   {path: '', redirectTo: '/home-page', pathMatch: 'full'},
   {
-    path: '', component: BasicLayoutComponent,
+    path: '', component: HomePageComponent,
     children: [
       {path: 'home-page',
         component: HomePageComponent,
@@ -25,8 +28,12 @@ const Router: Routes = [
     // QuillModule,
     // NzToolTipModule,
     // ImageCropperModule,
+    NgZorroAntdModule,
+    CommonModule,
+    LayoutModule,
     RouterModule.forChild(Router)
   ],
+  providers:[DatePipe],
   exports: [
   ]
 })

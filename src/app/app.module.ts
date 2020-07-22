@@ -8,6 +8,7 @@ import {RouterModule} from '@angular/router';
 import {ROUTES} from './app.routes';
 import {LocationStrategy, HashLocationStrategy, registerLocaleData} from '@angular/common';
 import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,7 +32,7 @@ registerLocaleData(zh);
     RouterModule.forRoot(ROUTES),
 
     NgZorroAntdModule,
-
+    NzIconModule,
     FormsModule,
 
     HttpClientModule,

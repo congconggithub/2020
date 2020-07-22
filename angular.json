@@ -128,5 +128,8 @@
       }
     }
   },
-  "defaultProject": "PIDP"
+  "defaultProject": "PIDP",
+  "cli": {
+    "analytics": false
+  }
 }

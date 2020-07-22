@@ -19,25 +19,23 @@
           <span>项目管理</span>
         </a>
       </li>-->
-      <li nz-submenu nzTitle="dashBoard" nzIcon="bug">
-<!--        <i nz-icon nzType="folder" nzTheme="outline"></i>-->
+      <li nz-submenu nzTitle="dashBoard" >
+<!--        <i nz-icon [nzType]="'home'"></i>-->
         <ul>
           <li nz-menu-item nzMatchRouter nzSelected>
             <a routerLink="/home-page">channel</a>
           </li>
-<!--          <li nz-menu-item>
-            <a routerLink="/dev/task">模型任务管理</a>
-          </li>-->
         </ul>
       </li>
 
     </ul>
 
     <button nz-button (click)="isCollapsed = !isCollapsed" style="position:absolute; left:23px; bottom: 25px;">
-      <i class="trigger"
+<!--      <i class="trigger"
          nz-icon
          [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-      ></i>
+      ></i>-->
+      <i nz-icon nzType="bars" nzTheme="outline"></i>
     </button>
 
   </nz-sider>
@@ -55,4 +53,3 @@
     </nz-content>
   </nz-layout>
 </nz-layout>
-<router-outlet ></router-outlet>

@@ -1,1 +1,54 @@
 /* You can add global styles to this file, and also import other style files */
+@import "assets/style/label_badge";
+@import "assets/style/margin_padding";
+
+.ant-menu-submenu > .ant-menu {
+  background: #F0F2F5;
+
+}
+.ant-menu-item-selected > a, .ant-menu-item-selected > a:hover{
+  font-weight: bolder;
+}
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected{
+  background: none;
+}
+.ant-menu{
+  font-weight: bold;
+}
+
+.nav>li{
+  font-weight: bold;
+}
+
+
+.page-card{
+  margin-bottom: 24px;
+
+
+
+  background-color: white;
+  width: 100%;
+  border-radius: 5px;
+  .card-title{
+    color: black;
+    font-size: 16px;
+    padding: 16px 32px;
+    width: 100%;
+    font-weight: 600;
+    border-bottom: 2px solid #f0f0f0;
+  }
+  .card-content{
+    padding: 16px 32px;
+  }
+}
+
+.ant-tabs-bar {
+  margin: 0;
+}
+tr.ant-table-expanded-row > td, tr.ant-table-expanded-row:hover > td {
+  background: white;
+}
+
+.ant-table-tbody > tr > td{
+  border: none;
+}
