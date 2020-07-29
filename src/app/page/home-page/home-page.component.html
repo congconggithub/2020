@@ -1,4 +1,95 @@
 <div class="page-card">
-  homePage works
-  testhomepage
+    <div class="card-title">
+      <button nz-button nzType="primary" (click)="add()"><!--<i nz-icon nzType="plus"></i>-->
+        <span >Add</span></button>
+    </div>
+  <div class="card-content">
+<!--    <div nz-row style="margin-bottom: 8px;">-->
+    <nz-tabset>
+      <nz-tab nzTitle="Tab 1">
+        Content of Tab Pane 1
+      </nz-tab>
+      <nz-tab nzTitle="Tab 2">
+        Content of Tab Pane 2
+      </nz-tab>
+      <nz-tab nzTitle="Tab 3">
+        Content of Tab Pane 3
+      </nz-tab>
+    </nz-tabset>
+
+
+      <div *ngIf="dataList !== []">
+        <nz-table #nzTable [nzData]="dataList"
+                  [nzPageSize]="pageSize"
+                  [nzShowPagination]="true"
+                  [nzFrontPagination]="false"
+                  [nzPageIndex]="pageNo"
+                  [nzTotal]="totalNum"
+                  (nzPageIndexChange)="pageChange($event)">
+          <thead>
+          <tr>
+            <th>name</th>
+            <th>priority</th>
+            <th>desc</th>
+            <th>state</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let d of nzTable.data;let i=index">
+            <td>{{d.name}}</td>
+            <td>{{d.priority}}</td>
+            <td>{{d.desc}}</td>
+            <td>{{d.state}}</td>
+            <td>
+              <button (click)="returnTo(d)">
+                操作
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+<!--    </div>-->
+  </div>
+
 </div>
+<ng-template #modifyDetail>
+  <form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="name" nzRequired>名称</nz-form-label>
+      <nz-form-control [nzSpan]="14" nzHasFeedback>
+        <input nz-input id="name" formControlName="name" maxlength="20" [(ngModel)]="detailItem.name">
+
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="priority" nzRequired>priority</nz-form-label>
+      <nz-form-control [nzSpan]="14" nzHasFeedback>
+        <nz-input-number id="priority" formControlName="priority" [(ngModel)]="detailItem.priority"
+                         [nzMin]="1" [nzStep]="1"></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="desc" nzRequired>desc</nz-form-label>
+      <nz-form-control [nzSpan]="14" nzHasFeedback>
+        <input nz-input id="desc" formControlName="desc" maxlength="20" [(ngModel)]="detailItem.desc">
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="state" nzRequired>state</nz-form-label>
+      <nz-form-control [nzSpan]="14" nzHasFeedback>
+        <nz-radio-group id="state" formControlName="state"  [(ngModel)]="detailItem.state">
+          <label nz-radio nzValue="true">True</label>
+          <label nz-radio nzValue="false">False</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</ng-template>
+<ng-template #modalFooter>
+  <button nz-button nzType="default" (click)="close()">取消</button>
+  <button nz-button nzType="primary" [disabled]="!validateForm.valid"
+          (click)="saveData(detailItem)">确定</button>
+</ng-template>

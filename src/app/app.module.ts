@@ -16,7 +16,7 @@ import zh from '@angular/common/locales/zh';
 
 import {HomePageModule} from './page/home-page/home-page.module';
 import {LayoutModule} from './components/common/layout.module';
-
+import {DetailModule} from './page/detail/detail.module';
 
 registerLocaleData(zh);
 
@@ -39,7 +39,8 @@ registerLocaleData(zh);
 
     BrowserAnimationsModule,
     HomePageModule,
-    LayoutModule
+    LayoutModule,
+    DetailModule
 
   ],
   providers: [

@@ -1,35 +1,29 @@
 import {NgModule} from '@angular/core';
 import {BasicLayoutComponent} from '../../components/common/basicLayout/basicLayout.component'
-// import {SharedModule} from '../../shared.module';
 import {RouterModule, Routes} from '@angular/router';
-// import {NzToolTipModule} from 'ng-zorro-antd';
-import {NgZorroAntdModule} from 'ng-zorro-antd';
 
-import { HomePageComponent } from './home-page.component';
+import {NgZorroAntdModule} from 'ng-zorro-antd';
+import {DetailComponent} from './detail.component';
+
 import { LayoutModule } from '../../components/common/layout.module';
 import { CommonModule , DatePipe} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-
 const Router: Routes = [
-  {path: '', redirectTo: '/home-page', pathMatch: 'full'},
+  {path: '', redirectTo: '/detail', pathMatch: 'full'},
   {
-    path: '', component: HomePageComponent,
+    path: '', component: DetailComponent,
     children: [
-      {path: 'home-page',
-        component: HomePageComponent,
+      {path: 'detail',
+        component: DetailComponent,
       }
     ]
   }
 ]
 
 @NgModule({
-  declarations: [ HomePageComponent],
+  declarations: [ DetailComponent],
   imports: [
-    // SharedModule,
-    // QuillModule,
-    // NzToolTipModule,
-    // ImageCropperModule,
     NgZorroAntdModule,
     CommonModule,
     LayoutModule,
@@ -41,5 +35,5 @@ const Router: Routes = [
   exports: [
   ]
 })
-export class HomePageModule {
+export class DetailModule {
 }

@@ -16,8 +16,16 @@ export class HomeService {
 
   // 首页table里的数据
   getData(param){
-    this.requestURL = HTTP_BASE + '/v2/channels';
-    return this.http.post(this.requestURL , param);
+    return this.http.get(this.common.createURL(HTTP_BASE + '/v2/channels', param)).toPromise();
+  }
+
+  saveData(param){
+/*    if(param.id){
+      return this.http.put(HTTP_BASE+'/v2/channels' , param).toPromise();
+    }else{
+      return this.http.post(HTTP_BASE+'/v2/channels' , param).toPromise();
+    }*/
+    return this.http.post(HTTP_BASE+'/v2/channels' , param).toPromise();
   }
 
 

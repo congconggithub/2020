@@ -1,0 +1,94 @@
+<div class="page-card">
+  <nz-tabset  [nzTabPosition]="'top'" [nzType]="'card'" >
+    <nz-tab nzTitle="信息">
+      <div class="card-content">
+        <form nz-form [formGroup]="validateForm">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzFor="name">name</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+              <input nz-input id="name" formControlName="name" [(ngModel)]="name">
+            </nz-form-control>
+          </nz-form-item >
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzFor="priority">priority</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+              <nz-input-number id="priority" formControlName="priority" [(ngModel)]="priority"
+                               [nzMin]="1" [nzStep]="1"></nz-input-number>
+            </nz-form-control>
+          </nz-form-item >
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzFor="desc">desc</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+              <input nz-input id="desc" formControlName="desc" [(ngModel)]="desc">
+            </nz-form-control>
+          </nz-form-item >
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzFor="state">state</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+              <nz-radio-group id="state" formControlName="state"  [(ngModel)]="state">
+                <label nz-radio nzValue="true">True</label>
+                <label nz-radio nzValue="false">False</label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item >
+
+          <nz-form-item>
+            <nz-form-control [nzSpan]="6" [nzOffset]="6">
+              <button nz-button nzType="primary" (click)="changeData()">确认修改</button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="分类">
+      <div class="card-content">
+        <ng-template #noDataTemplate>
+        </ng-template>
+        <nz-table #nestedTable [nzData]="listOfData" [nzShowPagination]="false" [nzFrontPagination]="false" [nzNoResult]="noDataTemplate">
+          <thead>
+          <tr style="display: none;">
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-template ngFor let-data let-i="index" [ngForOf]="nestedTable.data">
+            <tr class="first-tr">
+              <td style="width: 3%;padding-left: 28px;" [(nzExpand)]="data.expand"></td>
+              <td style="width: 77%;">
+                <span class="fri st-span" style="background: rgba(160,36,14,.1);">
+                  {{ data.name }}（{{data.markingCount}}）
+                </span>
+              </td>
+              <td style="width: 20%;">
+                  <span class="second-span" style="background: rgba(160,36,14,.1);">
+                    <a style="padding-left: 10px;" (click)="deleteLabel(data.id,i)">删除</a>
+                  </span>
+              </td>
+            </tr>
+            <tr [nzExpand]="data.expand">
+              <tag-item [data]="data.children" [index]="1" [parentId]="data.id" ></tag-item>
+            </tr>
+          </ng-template>
+          <tr class="first-tr">
+            <td style="width: 76px;height: 76px;display: flex;color: #9D1400;justify-content: center;align-items: center;">
+              <i nz-icon nzType="plus-circle" nzTheme="outline" style="font-size: 18px;"></i></td>
+            <td style="width: 77%;">
+              <span class="frist-span" style="background: rgba(160,36,14,.1);">
+                <input nz-input placeholder="新增标签" (keyup.enter)="addTree()" style="padding: 1.7px;border: none;background: none;" [(ngModel)]="classifying">
+              </span>
+            </td>
+            <td style="width: 20%;">
+                <span class="second-span" style="background: rgba(160,36,14,.1);position: relative;">
+                  <a style="border-right: 2px solid white;padding-right: 10px;" (click)="addTree()">确定</a>
+                  <a style="padding-left: 10px;" (click)="classifying=''">清空</a>
+                </span>
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-tab>
+  </nz-tabset>
+</div>
