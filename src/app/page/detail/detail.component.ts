@@ -7,6 +7,7 @@ import {NzModalRef, NzModalService, NzNotificationService} from 'ng-zorro-antd';
 import * as moment from 'moment';
 import {HomeService} from '../../services/channel/home.service';
 import {DetailService} from '../../services/channel/detail.service';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class DetailComponent implements OnInit {
   listOfData: any = [];
 
   classifying = '';
+  classifyingData = [];
 
 
 
@@ -55,7 +57,28 @@ export class DetailComponent implements OnInit {
     this.priority = this.route.snapshot.queryParams['priority'];
     this.desc = this.route.snapshot.queryParams['desc'];
     this.state = this.route.snapshot.queryParams['state'];
+    this.loadCategory();
+  }
 
+  loadCategory(){
+    this.detailService.loadClassify(this.id).then(res => {
+      console.log(res);
+      let list: any = []
+      res['categories'].forEach(item => {
+
+        let obj: any = {
+          id: item.id,
+          name: item.name,
+          priority: item.priority,
+          desc: item.desc,
+          state: item.state,
+          expand: false,
+          children: []
+        }
+        list.push(obj)
+      })
+      this.listOfData = this.toTree(list);
+    })
   }
 
 
@@ -75,6 +98,49 @@ export class DetailComponent implements OnInit {
       })
   }
 
+  save(){
+    this.classifying  = this.classifying.replace(/^\s+|\s+$/g,'');
+    if ( !this.classifying ) {
+      return false;
+    }
+
+    let param: any = {
+      name: this.name,
+      id: this.id,
+      priority: this.priority,
+      categories: this.classifying
+    }
+
+  }
+
+  toTree(data) {
+    console.log(data , 'data');
+    // 删除 所有 data,以防止多次调用
+    data.forEach(function (item) {
+      delete item.children;
+    });
+
+    // 将数据存储为 以 id 为 KEY 的 map 索引数据列
+    var map = {};
+    data.forEach(function (item) {
+      map[item.id] = item;
+    });
+    var val = [];
+    data.forEach(function (item) {
+      // 以当前遍历项，的pid,去map对象中找到索引的id
+      var parent = map[item.pid];
+      // 好绕啊，如果找到索引，那么说明此项不在顶级当中,那么需要把此项添加到，他对应的父级中
+      if (parent) {
+        (parent.children || (parent.children = [])).push(item);
+      } else {
+        // 如果没有在map中找到对应的索引ID,那么直接把 当前的item添加到 val结果集中，作为顶级
+        val.push(item);
+      }
+    });
+    console.log(val , 'val');
+    return val;
+  }
+
   addTree() {
     this.classifying  = this.classifying.replace(/^\s+|\s+$/g,'');
     if ( !this.classifying ) {
@@ -82,10 +148,14 @@ export class DetailComponent implements OnInit {
     }
 
     let param: any = {
-      labelName: this.classifying
+      name: this.name,
+      id: this.id,
+      priority: this.priority,
+      categories: this.classifying
     }
     this.detailService.saveClassify(param)
       .then((item: any) => {
+        console.log(item , 'item');
         if (!this.listOfData) this.listOfData = []
         if (item.data && item.data.labelId) {
           let list = [...this.listOfData];

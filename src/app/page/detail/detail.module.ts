@@ -8,7 +8,7 @@ import {DetailComponent} from './detail.component';
 import { LayoutModule } from '../../components/common/layout.module';
 import { CommonModule , DatePipe} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
+import { NzIconModule } from 'ng-zorro-antd/icon';
 const Router: Routes = [
   {path: '', redirectTo: '/detail', pathMatch: 'full'},
   {
@@ -29,6 +29,7 @@ const Router: Routes = [
     LayoutModule,
     FormsModule,
     ReactiveFormsModule,
+    NzIconModule,
     RouterModule.forChild(Router)
   ],
   providers:[DatePipe],

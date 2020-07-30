@@ -14,7 +14,14 @@ export class DetailService {
   ) { }
 
   saveClassify(param:any){
-    return this.http.post(HTTP_BASE+ param.id +  '/categories',param).toPromise()
+    console.log(param , 'param');
+    console.log(HTTP_BASE  +'/v2/channels/' + param.id + '/categories' , 'saveClassify');
+    return this.http.post(HTTP_BASE + '/v2/channels/' +param.id +  '/categories',param).toPromise()
+  }
+
+  loadClassify(param){
+    console.log(HTTP_BASE + '/v2/channels/' + param + '/categories'  , ' 5555');
+    return this.http.get(this.common.createURL(HTTP_BASE + '/v2/channels/' + param + '/categories', param)).toPromise();
   }
 
 }

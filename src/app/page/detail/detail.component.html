@@ -58,7 +58,7 @@
               <td style="width: 3%;padding-left: 28px;" [(nzExpand)]="data.expand"></td>
               <td style="width: 77%;">
                 <span class="fri st-span" style="background: rgba(160,36,14,.1);">
-                  {{ data.name }}（{{data.markingCount}}）
+                  {{ data.name }}
                 </span>
               </td>
               <td style="width: 20%;">
@@ -73,7 +73,8 @@
           </ng-template>
           <tr class="first-tr">
             <td style="width: 76px;height: 76px;display: flex;color: #9D1400;justify-content: center;align-items: center;">
-              <i nz-icon nzType="plus-circle" nzTheme="outline" style="font-size: 18px;"></i></td>
+              <i nz-icon nzType="plus-circle" nzTheme="outline" style="font-size: 18px;"></i>
+            </td>
             <td style="width: 77%;">
               <span class="frist-span" style="background: rgba(160,36,14,.1);">
                 <input nz-input placeholder="新增标签" (keyup.enter)="addTree()" style="padding: 1.7px;border: none;background: none;" [(ngModel)]="classifying">
@@ -81,7 +82,7 @@
             </td>
             <td style="width: 20%;">
                 <span class="second-span" style="background: rgba(160,36,14,.1);position: relative;">
-                  <a style="border-right: 2px solid white;padding-right: 10px;" (click)="addTree()">确定</a>
+                  <a style="border-right: 2px solid white;padding-right: 10px;" (click)="save()">确定</a>
                   <a style="padding-left: 10px;" (click)="classifying=''">清空</a>
                 </span>
             </td>
