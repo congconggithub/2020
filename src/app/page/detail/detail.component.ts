@@ -28,7 +28,7 @@ export class DetailComponent implements OnInit {
 
   classifying = '';
   classifyingData = [];
-
+  priorityInput: number;
 
 
 
@@ -54,7 +54,7 @@ export class DetailComponent implements OnInit {
   ngOnInit(): void {
     this.name = this.route.snapshot.queryParams['name'];
     this.id = this.route.snapshot.queryParams['id'];
-    this.priority = this.route.snapshot.queryParams['priority'];
+    this.priority = parseInt(this.route.snapshot.queryParams['priority']);
     this.desc = this.route.snapshot.queryParams['desc'];
     this.state = this.route.snapshot.queryParams['state'];
     this.loadCategory();
@@ -103,14 +103,22 @@ export class DetailComponent implements OnInit {
     if ( !this.classifying ) {
       return false;
     }
-
+    console.log(this.classifying , 'this.classifying');
     let param: any = {
       name: this.name,
       id: this.id,
       priority: this.priority,
-      categories: this.classifying
+      categories: [{
+        name:this.classifying,
+        priority: this.priorityInput
+      }]
     }
 
+    this.detailService.saveClassify(param)
+      .then((item: any) => {
+        console.log(item , 'item');
+        this.classifying = ''
+      })
   }
 
   toTree(data) {
@@ -153,7 +161,7 @@ export class DetailComponent implements OnInit {
       priority: this.priority,
       categories: this.classifying
     }
-    this.detailService.saveClassify(param)
+/*    this.detailService.saveClassify(param)
       .then((item: any) => {
         console.log(item , 'item');
         if (!this.listOfData) this.listOfData = []
@@ -172,7 +180,7 @@ export class DetailComponent implements OnInit {
         }
 
         this.classifying = ''
-      })
+      })*/
   }
 
 
