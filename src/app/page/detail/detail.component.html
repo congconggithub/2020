@@ -42,9 +42,25 @@
     </nz-tab>
     <nz-tab nzTitle="分类">
       <div class="card-content">
-        <ng-template #noDataTemplate>
-        </ng-template>
-        <nz-table #nestedTable [nzData]="listOfData" [nzShowPagination]="false" [nzFrontPagination]="false" [nzNoResult]="noDataTemplate">
+        <nz-tree [nzData]="listOfData" nzShowLine (nzClick)="nzEvent($event)" (nzExpandChange)="expand()">
+        </nz-tree>
+<!--        <div>
+          <i nz-icon nzType="plus-square" nzTheme="outline"></i>
+          <span class="frist-span" >
+            <span>分类名：</span>
+            <input nz-input placeholder="新增分类" style="padding: 1.7px;border: none;
+              background: rgba(160,36,14,.1); width: 200px; margin-right: 10px;"  [(ngModel)]="classifying">
+            <span>权重：</span>
+            <nz-input-number   [(ngModel)]="priorityInput" [nzMin]="1" [nzStep]="1"></nz-input-number>
+          </span>
+          <span class="second-span" style="background: rgba(160,36,14,.1);position: relative;">
+            <a style="border-right: 2px solid white;padding-right: 10px;" (click)="save()">确定</a>
+            <a style="padding-left: 10px;" (click)="classifying=''">清空</a>
+          </span>
+        </div>-->
+
+
+   <!--     <nz-table #nestedTable [nzData]="listOfData" [nzShowPagination]="false" [nzFrontPagination]="false" [nzNoResult]="noDataTemplate">
           <thead>
           <tr style="display: none;">
             <th></th>
@@ -69,6 +85,7 @@
             </tr>
             <tr [nzExpand]="data.expand">
               <tag-item [data]="data.children" [index]="1" [parentId]="data.id" ></tag-item>
+              444
             </tr>
           </ng-template>
           <tr class="first-tr">
@@ -77,9 +94,11 @@
             </td>
             <td style="width: 77%;">
               <span class="frist-span" >
+                <span>分类名：</span>
                 <input nz-input placeholder="新增分类" (keyup.enter)="addTree()" style="padding: 1.7px;border: none;
               background: rgba(160,36,14,.1); width: 200px; margin-right: 10px;"  [(ngModel)]="classifying">
-                 <nz-input-number   [(ngModel)]="priorityInput" [nzMin]="1" [nzStep]="1"></nz-input-number>
+                <span>权重：</span>
+                <nz-input-number   [(ngModel)]="priorityInput" [nzMin]="1" [nzStep]="1"></nz-input-number>
               </span>
             </td>
             <td style="width: 20%;">
@@ -90,12 +109,38 @@
             </td>
           </tr>
           </tbody>
-        </nz-table>
+        </nz-table>-->
       </div>
     </nz-tab>
     <nz-tab nzTitle="文件">
       <div class="card-content">
+
+
+
       </div>
     </nz-tab>
   </nz-tabset>
 </div>
+<ng-template #modifyDetail>
+  <form nz-form [formGroup]="detaildateForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="classifying" nzRequired>分类名</nz-form-label>
+      <nz-form-control [nzSpan]="14" nzHasFeedback>
+        <input nz-input id="classifying" formControlName="classifying" maxlength="20" [(ngModel)]="detailItem.classifying">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="priorityInput" nzRequired>权重</nz-form-label>
+      <nz-form-control [nzSpan]="14" nzHasFeedback>
+        <input nz-input id="priorityInput" formControlName="priorityInput" maxlength="20" [(ngModel)]="detailItem.priorityInput">
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+</ng-template>
+<ng-template #modalFooter>
+  <button nz-button nzType="default" (click)="close()">取消</button>
+  <button nz-button nzType="primary" [disabled]="!detaildateForm.valid"
+          (click)="saveData(detailItem)">确定</button>
+</ng-template>

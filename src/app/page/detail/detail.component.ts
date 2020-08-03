@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import {HomeService} from '../../services/channel/home.service';
 import {DetailService} from '../../services/channel/detail.service';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
 
 
 @Component({
@@ -16,7 +17,13 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
+  @ViewChild('modifyDetail', {static: false}) modifyDetail;
+  @ViewChild('modalFooter', {static: false}) modalFooter;
+
   validateForm: FormGroup;
+  detaildateForm: FormGroup;
+  detailItem: any = {};
+  modifyModal: NzModalRef;
 
   name ;
   id;
@@ -48,7 +55,11 @@ export class DetailComponent implements OnInit {
       desc:[null,[Validators.required]],
       state:[null,[Validators.required]],
 
-    })
+    }),
+      this.detaildateForm = this.fb.group({
+        classifying:[null,[Validators.required]],
+        priorityInput:[null,[Validators.required]],
+      })
   }
 
   ngOnInit(): void {
@@ -62,22 +73,11 @@ export class DetailComponent implements OnInit {
 
   loadCategory(){
     this.detailService.loadClassify(this.id).then(res => {
-      console.log(res);
-      let list: any = []
-      res['categories'].forEach(item => {
-
-        let obj: any = {
-          id: item.id,
-          name: item.name,
-          priority: item.priority,
-          desc: item.desc,
-          state: item.state,
-          expand: false,
-          children: []
-        }
-        list.push(obj)
+      this.listOfData = res['categories'];
+      this.listOfData.forEach(l => {
+        l['title'] = l['name'] + '（权重：' + l['priority'] + '）';
+        l['key'] = l['id']
       })
-      this.listOfData = this.toTree(list);
     })
   }
 
@@ -104,21 +104,27 @@ export class DetailComponent implements OnInit {
       return false;
     }
     console.log(this.classifying , 'this.classifying');
+    let data = [{
+      name:this.classifying,
+      priority: this.priorityInput,
+      expand: false,
+    }]
+    console.log(data , 'data111');
+    this.toTree(data);
     let param: any = {
       name: this.name,
       id: this.id,
       priority: this.priority,
-      categories: [{
-        name:this.classifying,
-        priority: this.priorityInput
-      }]
+      categories: [
+        // {name:this.classifying, priority: this.priorityInput}
+      ]
     }
 
-    this.detailService.saveClassify(param)
+/*    this.detailService.saveClassify(param)
       .then((item: any) => {
         console.log(item , 'item');
         this.classifying = ''
-      })
+      })*/
   }
 
   toTree(data) {
@@ -133,13 +139,14 @@ export class DetailComponent implements OnInit {
     data.forEach(function (item) {
       map[item.id] = item;
     });
+    console.log(map , 'map');
     var val = [];
     data.forEach(function (item) {
       // 以当前遍历项，的pid,去map对象中找到索引的id
       var parent = map[item.pid];
       // 好绕啊，如果找到索引，那么说明此项不在顶级当中,那么需要把此项添加到，他对应的父级中
       if (parent) {
-        (parent.children || (parent.children = [])).push(item);
+        // (parent.children || (parent.children = [])).push(item);
       } else {
         // 如果没有在map中找到对应的索引ID,那么直接把 当前的item添加到 val结果集中，作为顶级
         val.push(item);
@@ -183,15 +190,58 @@ export class DetailComponent implements OnInit {
       })*/
   }
 
+  nzEvent(event: NzFormatEmitEvent): void {
+    console.log(event , 'event');
+    this.detailItem = {pid : event.node.origin.id};
+    this.modifyModal = this.modalService.create({
+      nzTitle: '新增分类',
+      nzContent: this.modifyDetail,
+      nzWidth: 800,
+      nzMaskClosable: false,
+      nzClosable: false,
+      nzFooter: this.modalFooter
+    })
+  }
 
-  deleteLabel(id, index) {
-/*    this.detailService.deleteLabel({ id: id })
-      .then(res => {
-        let list = [...this.listOfData]
-        this.listOfData = []
-        list.splice(index, 1)
-        this.listOfData = list
-      })*/
+  close(){
+    this.modifyModal.destroy()
+  }
+
+  saveData(item){
+    this.findParent(this.listOfData , item);
+    this.detailService.saveClassify(this.listOfData)
+      .then((item: any) => {
+        console.log(item , 'item');
+        this.classifying = '';
+        this.loadCategory();
+        this.close();
+      })
+  }
+
+  findParent(list , data ){
+    list.forEach(e => {
+      if( e.id === data.pid){
+        if( e['categories']){
+          e['categories'].push(data);
+        }else {
+          e['categories'] = [data]
+        }
+        return;
+      }else if(e['categories'] && e['categories'].length > 0){
+        this.findParent(e['categories'] , data);
+        e['categories'].push(data);
+        return ;
+      }else {
+        this.listOfData.push(data);
+        return;
+      }
+    })
+  }
+
+
+
+  expand(){
+
   }
 
 
