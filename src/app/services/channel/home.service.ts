@@ -27,6 +27,8 @@ export class HomeService {
     }*/
     return this.http.post(HTTP_BASE+'/v2/channels' , param).toPromise();
   }
-
+  remove(param){
+    return this.http.delete(HTTP_BASE + '/v2/channels/' + param._id);
+  }
 
 }

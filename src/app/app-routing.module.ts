@@ -3,11 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import {HomePageComponent} from './page/home-page/home-page.component';
 import {HomePageModule} from './page/home-page/home-page.module';
 import {DetailComponent} from './page/detail/detail.component';
+import {JobComponent} from './page/job/job.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home-page', pathMatch: 'full'},
   {path: 'home-page', component: HomePageComponent},
   {path: 'detail', component: DetailComponent},
+  {path: 'job', component: JobComponent},
   { path: 'home', loadChildren: () => import('./page/home-page/home-page.module').then(m => m.HomePageModule),data:{
       breadcrumb: '首页'
     } },

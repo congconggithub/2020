@@ -93,4 +93,15 @@ export class HomePageComponent implements OnInit {
     this.router.navigate(['/detail/'],{queryParams: params})
   }
 
+  delete(model) {
+    this.homeService.remove(model).subscribe(result => {
+      if (result['code'] === 0) {
+        this.loadData();
+        this.notification.create('success', '删除成功', '');
+      } else {
+        this.notification.create('error', '删除出错', result['message']);
+      }
+    })
+  }
+
 }

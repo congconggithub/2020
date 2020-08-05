@@ -10,6 +10,8 @@ import {DetailService} from '../../services/channel/detail.service';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
 
+import { UploadFile, UploadXHRArgs } from 'ng-zorro-antd/upload';
+import {HTTP_BASE} from '../../config';
 
 @Component({
   selector: 'app-detail',
@@ -21,7 +23,7 @@ export class DetailComponent implements OnInit {
   @ViewChild('modalFooter', {static: false}) modalFooter;
 
   validateForm: FormGroup;
-  detaildateForm: FormGroup;
+  detailDateForm: FormGroup;
   detailItem: any = {};
   modifyModal: NzModalRef;
 
@@ -37,8 +39,14 @@ export class DetailComponent implements OnInit {
   classifyingData = [];
   priorityInput: number;
 
-
-
+  fileItem: any = {};
+  fileList: any = [];
+  uploadDesc = '' ; // 上传描述
+  uploading = false ; // 上传loading状态
+  uploadPath = '';
+  configuration= [];   // 配置
+  i = 0;
+  editId: string | null = null;
   constructor(
     private route: ActivatedRoute,
     private modalService: NzModalService,
@@ -56,7 +64,7 @@ export class DetailComponent implements OnInit {
       state:[null,[Validators.required]],
 
     }),
-      this.detaildateForm = this.fb.group({
+      this.detailDateForm = this.fb.group({
         classifying:[null,[Validators.required]],
         priorityInput:[null,[Validators.required]],
       })
@@ -68,6 +76,8 @@ export class DetailComponent implements OnInit {
     this.priority = parseInt(this.route.snapshot.queryParams['priority']);
     this.desc = this.route.snapshot.queryParams['desc'];
     this.state = this.route.snapshot.queryParams['state'];
+    this.uploadPath =  HTTP_BASE + '/v2/channels/'+ this.id +'/program';
+
     this.loadCategory();
   }
 
@@ -98,7 +108,7 @@ export class DetailComponent implements OnInit {
       })
   }
 
-  save(){
+/*  save(){
     this.classifying  = this.classifying.replace(/^\s+|\s+$/g,'');
     if ( !this.classifying ) {
       return false;
@@ -120,12 +130,7 @@ export class DetailComponent implements OnInit {
       ]
     }
 
-/*    this.detailService.saveClassify(param)
-      .then((item: any) => {
-        console.log(item , 'item');
-        this.classifying = ''
-      })*/
-  }
+  }*/
 
   toTree(data) {
     console.log(data , 'data');
@@ -156,42 +161,7 @@ export class DetailComponent implements OnInit {
     return val;
   }
 
-  addTree() {
-    this.classifying  = this.classifying.replace(/^\s+|\s+$/g,'');
-    if ( !this.classifying ) {
-      return false;
-    }
-
-    let param: any = {
-      name: this.name,
-      id: this.id,
-      priority: this.priority,
-      categories: this.classifying
-    }
-/*    this.detailService.saveClassify(param)
-      .then((item: any) => {
-        console.log(item , 'item');
-        if (!this.listOfData) this.listOfData = []
-        if (item.data && item.data.labelId) {
-          let list = [...this.listOfData];
-          this.listOfData = []
-          list.push({
-            id: item.data.labelId,
-            name: item.data.labelName,
-            pid: item.data.parentId,
-            level: item.data.labelLevel,
-            expand: false,
-            children: []
-          })
-          this.listOfData = list;
-        }
-
-        this.classifying = ''
-      })*/
-  }
-
   nzEvent(event: NzFormatEmitEvent): void {
-    console.log(event , 'event');
     this.detailItem = {pid : event.node.origin.id};
     this.modifyModal = this.modalService.create({
       nzTitle: '新增分类',
@@ -238,11 +208,21 @@ export class DetailComponent implements OnInit {
     })
   }
 
-
-
-  expand(){
-
+  startEdit(id: string): void {
+    this.editId = id;
   }
+
+  addRow(): void {
+    this.configuration = [
+      ...this.configuration,
+      {
+        key: `${this.i}`,
+        value: `Edward King ${this.i}`,
+      }
+    ];
+    this.i++;
+  }
+
 
 
 }

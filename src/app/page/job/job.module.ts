@@ -3,26 +3,26 @@ import {BasicLayoutComponent} from '../../components/common/basicLayout/basicLay
 import {RouterModule, Routes} from '@angular/router';
 
 import {NgZorroAntdModule} from 'ng-zorro-antd';
-import {DetailComponent} from './detail.component';
+import {JobComponent} from './job.component';
 
 import { LayoutModule } from '../../components/common/layout.module';
 import { CommonModule , DatePipe} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 const Router: Routes = [
-  // {path: '', redirectTo: '/detail', pathMatch: 'full'},
+
   {
-    path: '', component: DetailComponent,
+    path: '', component: JobComponent,
     children: [
-      {path: 'detail',
-        component: DetailComponent,
+      {path: 'job',
+        component: JobComponent,
       }
     ]
   }
 ]
 
 @NgModule({
-  declarations: [ DetailComponent],
+  declarations: [ JobComponent],
   imports: [
     NgZorroAntdModule,
     CommonModule,
@@ -36,5 +36,5 @@ const Router: Routes = [
   exports: [
   ]
 })
-export class DetailModule {
+export class JobModule {
 }

@@ -17,6 +17,7 @@ import zh from '@angular/common/locales/zh';
 import {HomePageModule} from './page/home-page/home-page.module';
 import {LayoutModule} from './components/common/layout.module';
 import {DetailModule} from './page/detail/detail.module';
+import {JobModule} from './page/job/job.module';
 
 registerLocaleData(zh);
 
@@ -40,8 +41,8 @@ registerLocaleData(zh);
     BrowserAnimationsModule,
     HomePageModule,
     LayoutModule,
-    DetailModule
-
+    DetailModule,
+    JobModule
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},

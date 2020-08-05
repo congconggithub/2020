@@ -12,18 +12,13 @@
 
     </div>
     <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-
-     <!-- <li nz-menu-item nz-tooltip nzTooltipPlacement="right">
-        <a routerLink="/project">
-          <i nz-icon nzType="cluster" nzTheme="outline"></i>
-          <span>项目管理</span>
-        </a>
-      </li>-->
-      <li nz-submenu nzTitle="dashBoard" >
-<!--        <i nz-icon [nzType]="'home'"></i>-->
+      <li nz-submenu nzTitle="dashBoard" nzIcon="home">
         <ul>
           <li nz-menu-item nzMatchRouter nzSelected>
             <a routerLink="/home-page">channel</a>
+          </li>
+          <li nz-menu-item nzMatchRouter nzSelected>
+            <a routerLink="/job">Job</a>
           </li>
         </ul>
       </li>
@@ -31,11 +26,10 @@
     </ul>
 
     <button nz-button (click)="isCollapsed = !isCollapsed" style="position:absolute; left:23px; bottom: 25px;">
-<!--      <i class="trigger"
+      <i class="trigger"
          nz-icon
          [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-      ></i>-->
-      <i nz-icon nzType="bars" nzTheme="outline"></i>
+      ></i>
     </button>
 
   </nz-sider>

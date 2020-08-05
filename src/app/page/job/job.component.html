@@ -1,0 +1,22 @@
+<div class="page-card">
+  <div class="page-title">
+    <div nz-row nzJustify="space-around" [nzGutter]="16">
+      <div nz-col nzSpan="4" class="gutter-row">col-4</div>
+      <div nz-col nzSpan="4" class="gutter-row">col-4</div>
+      <div nz-col nzSpan="4" class="gutter-row">col-4</div>
+      <div nz-col nzSpan="4" class="gutter-row">col-4</div>
+    </div>
+  </div>
+  <div class="page-content">
+    <nz-tabset>
+      <nz-tab [nzTitle]="titleTemplate1">
+        <ng-template #titleTemplate1> <i nz-icon [nzType]="'unordered-list'"></i></ng-template>
+
+      </nz-tab>
+      <nz-tab [nzTitle]="titleTemplate2">
+        <ng-template #titleTemplate2> <i nz-icon [nzType]="'pie-chart'"></i></ng-template>
+      </nz-tab>
+    </nz-tabset>
+
+  </div>
+</div>

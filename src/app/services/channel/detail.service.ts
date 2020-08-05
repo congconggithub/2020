@@ -8,14 +8,13 @@ import {Common} from '../../utils/common';
 })
 export class DetailService {
   requestURL;
+
   constructor(
     private http: HttpClient,
     private common: Common
   ) { }
 
   saveClassify(param:any){
-    console.log(param , 'param');
-    console.log(HTTP_BASE  +'/v2/channels/' + param.id + '/categories' , 'saveClassify');
     return this.http.post(HTTP_BASE + '/v2/channels/' +param.id +  '/categories',param).toPromise()
   }
 
@@ -23,5 +22,10 @@ export class DetailService {
     console.log(HTTP_BASE + '/v2/channels/' + param + '/categories'  , ' 5555');
     return this.http.get(this.common.createURL(HTTP_BASE + '/v2/channels/' + param + '/categories', param)).toPromise();
   }
+
+  upload(param:any){
+    return this.http.post(HTTP_BASE+'/v2/channels/' + param.id + '/program', param).toPromise()
+  }
+
 
 }
