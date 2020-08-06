@@ -28,12 +28,12 @@
             <td>{{d.desc}}</td>
             <td>{{d.state}}</td>
             <td>
-              <button (click)="returnTo(d)">
+              <span (click)="returnTo(d)">
                 详细
-              </button>
-              <button (click)="delete(d)">
+              </span>
+              <span nz-popconfirm nzTitle="确定要删除吗？" (nzOnConfirm)="delete(d)">
                 删除
-              </button>
+              </span>
             </td>
           </tr>
           </tbody>
@@ -61,12 +61,12 @@
     </nz-form-item>
 
     <nz-form-item>
-      <nz-form-label [nzSpan]="6" nzFor="desc" nzRequired>desc</nz-form-label>
+      <nz-form-label [nzSpan]="6" nzFor="desc" >desc</nz-form-label>
       <nz-form-control [nzSpan]="14" nzHasFeedback>
         <input nz-input id="desc" formControlName="desc" maxlength="20" [(ngModel)]="detailItem.desc">
       </nz-form-control>
     </nz-form-item>
-    <nz-form-item>
+<!--    <nz-form-item>
       <nz-form-label [nzSpan]="6" nzFor="state" nzRequired>state</nz-form-label>
       <nz-form-control [nzSpan]="14" nzHasFeedback>
         <nz-radio-group id="state" formControlName="state"  [(ngModel)]="detailItem.state">
@@ -74,7 +74,7 @@
           <label nz-radio nzValue="false">False</label>
         </nz-radio-group>
       </nz-form-control>
-    </nz-form-item>
+    </nz-form-item>-->
   </form>
 </ng-template>
 <ng-template #modalFooter>

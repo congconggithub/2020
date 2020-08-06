@@ -36,8 +36,7 @@ export class HomePageComponent implements OnInit {
     this.validateForm = this.fb.group({
       name:[null,[Validators.required]],
       priority:[null,[Validators.required]],
-      desc:[null,[Validators.required]],
-      state:[null,[Validators.required]],
+      desc:[null],
     })
   }
 
@@ -70,7 +69,7 @@ export class HomePageComponent implements OnInit {
 
   saveData(item){
     item['created'] = moment().format('x');
-    console.log(item , 'item');
+    item['state'] = false;
     this.homeService.saveData(item)
       .then( res => {
         this.notification.create('success', '新增成功', '');
@@ -88,12 +87,13 @@ export class HomePageComponent implements OnInit {
       name:key.name,
       priority: key.priority,
       desc: key.desc,
-      state: key.state
+      state: false
     }
     this.router.navigate(['/detail/'],{queryParams: params})
   }
 
   delete(model) {
+    console.log(model , 'model');
     this.homeService.remove(model).subscribe(result => {
       if (result['code'] === 0) {
         this.loadData();

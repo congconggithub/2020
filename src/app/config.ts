@@ -1,4 +1,4 @@
-export const HTTP_BASE = 'http://192.168.9.79:9000';
+export const HTTP_BASE = 'http://192.168.9.78:9000';
 // export const HTTP_BASE = 'http://localhost:9001';
 
 

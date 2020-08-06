@@ -22,15 +22,6 @@
               <input nz-input id="desc" formControlName="desc" [(ngModel)]="desc">
             </nz-form-control>
           </nz-form-item >
-          <nz-form-item>
-            <nz-form-label [nzSpan]="6" nzFor="state">state</nz-form-label>
-            <nz-form-control [nzSpan]="14">
-              <nz-radio-group id="state" formControlName="state"  [(ngModel)]="state">
-                <label nz-radio nzValue="true">True</label>
-                <label nz-radio nzValue="false">False</label>
-              </nz-radio-group>
-            </nz-form-control>
-          </nz-form-item >
 
           <nz-form-item>
             <nz-form-control [nzSpan]="6" [nzOffset]="6">
@@ -42,7 +33,7 @@
     </nz-tab>
     <nz-tab nzTitle="分类">
       <div class="card-content">
-        <nz-tree [nzData]="listOfData" nzShowLine (nzClick)="nzEvent($event)" >
+        <nz-tree [nzData]="treeList" nzShowLine (nzClick)="nzEvent($event)" >
         </nz-tree>
       </div>
     </nz-tab>
@@ -51,7 +42,7 @@
       <div class="card-content">
         <div nz-row style="margin-bottom: 8px;">
           <nz-upload [nzAction]="uploadPath" style="float: left; margin-right: 10px;" >
-            <button nz-button><i nz-icon nzType="upload"></i><span>上传数据</span></button>
+            <button nz-button><i nz-icon nzType="upload"></i><span>上传文件</span></button>
           </nz-upload>
         </div>
         <div class="title">配置</div>

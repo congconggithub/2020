@@ -12,6 +12,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
 
 import { UploadFile, UploadXHRArgs } from 'ng-zorro-antd/upload';
 import {HTTP_BASE} from '../../config';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-detail',
@@ -34,7 +35,7 @@ export class DetailComponent implements OnInit {
   state: boolean;
   created;
   listOfData: any = [];
-
+  treeList : any = [];
   classifying = '';
   classifyingData = [];
   priorityInput: number;
@@ -61,7 +62,6 @@ export class DetailComponent implements OnInit {
       name:[null,[Validators.required]],
       priority:[null,[Validators.required]],
       desc:[null,[Validators.required]],
-      state:[null,[Validators.required]],
 
     }),
       this.detailDateForm = this.fb.group({
@@ -83,12 +83,32 @@ export class DetailComponent implements OnInit {
 
   loadCategory(){
     this.detailService.loadClassify(this.id).then(res => {
-      this.listOfData = res['categories'];
-      this.listOfData.forEach(l => {
+      let re = [res]
+      console.log(re);
+      console.log(res , 'res');
+      this.listOfData = re;
+      this.treeList = _.cloneDeep(this.listOfData);
+
+      this.treeList.forEach(l => {
         l['title'] = l['name'] + '（权重：' + l['priority'] + '）';
-        l['key'] = l['id']
+        l['key'] = l['id'];
+        l['children'] = l['categories']
+        this.changeProp(l);
       })
     })
+  }
+  changeProp(data){
+    if(data['categories']){
+      data.categories.forEach( d => {
+        d['title'] = d['name'] + '（权重：' + d['priority'] + '）';
+        d['key'] = d['id'];
+        d['children'] = d['categories']
+        if(d['categories']){
+          this.changeProp(d)
+        }
+      })
+    }
+
   }
 
 
@@ -99,66 +119,13 @@ export class DetailComponent implements OnInit {
       id: this.id,
       priority: this.priority,
       desc: this.desc,
-      state: this.state,
-      created:this.created
+      state: false,
+      // created:this.created
     }
     this.homeService.saveData(params)
       .then( res => {
         this.notification.create('success', '修改成功', '');
       })
-  }
-
-/*  save(){
-    this.classifying  = this.classifying.replace(/^\s+|\s+$/g,'');
-    if ( !this.classifying ) {
-      return false;
-    }
-    console.log(this.classifying , 'this.classifying');
-    let data = [{
-      name:this.classifying,
-      priority: this.priorityInput,
-      expand: false,
-    }]
-    console.log(data , 'data111');
-    this.toTree(data);
-    let param: any = {
-      name: this.name,
-      id: this.id,
-      priority: this.priority,
-      categories: [
-        // {name:this.classifying, priority: this.priorityInput}
-      ]
-    }
-
-  }*/
-
-  toTree(data) {
-    console.log(data , 'data');
-    // 删除 所有 data,以防止多次调用
-    data.forEach(function (item) {
-      delete item.children;
-    });
-
-    // 将数据存储为 以 id 为 KEY 的 map 索引数据列
-    var map = {};
-    data.forEach(function (item) {
-      map[item.id] = item;
-    });
-    console.log(map , 'map');
-    var val = [];
-    data.forEach(function (item) {
-      // 以当前遍历项，的pid,去map对象中找到索引的id
-      var parent = map[item.pid];
-      // 好绕啊，如果找到索引，那么说明此项不在顶级当中,那么需要把此项添加到，他对应的父级中
-      if (parent) {
-        // (parent.children || (parent.children = [])).push(item);
-      } else {
-        // 如果没有在map中找到对应的索引ID,那么直接把 当前的item添加到 val结果集中，作为顶级
-        val.push(item);
-      }
-    });
-    console.log(val , 'val');
-    return val;
   }
 
   nzEvent(event: NzFormatEmitEvent): void {
@@ -178,10 +145,17 @@ export class DetailComponent implements OnInit {
   }
 
   saveData(item){
-    this.findParent(this.listOfData , item);
-    this.detailService.saveClassify(this.listOfData)
+    console.log(item , 'item');
+    let param = {
+      name: item['classifying'],
+      priority: item['priorityInput'],
+      pid: item['pid']
+    }
+    this.findParent(this.listOfData , param);
+    console.log(this.listOfData , 'this.listOfData');
+    let paramData = this.listOfData[0];
+    this.detailService.saveClassify(paramData)
       .then((item: any) => {
-        console.log(item , 'item');
         this.classifying = '';
         this.loadCategory();
         this.close();
@@ -190,18 +164,27 @@ export class DetailComponent implements OnInit {
 
   findParent(list , data ){
     list.forEach(e => {
+      delete e.selected;
+      delete e.key;
+      delete e.title;
       if( e.id === data.pid){
         if( e['categories']){
+          console.log(e , 111);
           e['categories'].push(data);
         }else {
-          e['categories'] = [data]
+          e['categories'] = [data];
         }
+        delete data.pid;
         return;
       }else if(e['categories'] && e['categories'].length > 0){
+        console.log(e , 2);
         this.findParent(e['categories'] , data);
+        if(data.pid) delete data.pid;
         e['categories'].push(data);
         return ;
       }else {
+        console.log(3);
+        if(data.pid) {delete data.pid};
         this.listOfData.push(data);
         return;
       }
