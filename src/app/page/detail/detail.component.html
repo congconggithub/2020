@@ -8,20 +8,20 @@
             <nz-form-control [nzSpan]="14">
               <input nz-input id="name" formControlName="name" [(ngModel)]="name">
             </nz-form-control>
-          </nz-form-item >
+          </nz-form-item>
           <nz-form-item>
             <nz-form-label [nzSpan]="6" nzFor="priority">priority</nz-form-label>
             <nz-form-control [nzSpan]="14">
               <nz-input-number id="priority" formControlName="priority" [(ngModel)]="priority"
                                [nzMin]="1" [nzStep]="1"></nz-input-number>
             </nz-form-control>
-          </nz-form-item >
+          </nz-form-item>
           <nz-form-item>
             <nz-form-label [nzSpan]="6" nzFor="desc">desc</nz-form-label>
             <nz-form-control [nzSpan]="14">
               <input nz-input id="desc" formControlName="desc" [(ngModel)]="desc">
             </nz-form-control>
-          </nz-form-item >
+          </nz-form-item>
 
           <nz-form-item>
             <nz-form-control [nzSpan]="6" [nzOffset]="6">
@@ -41,28 +41,38 @@
     <nz-tab nzTitle="文件">
       <div class="card-content">
         <div nz-row style="margin-bottom: 8px;">
-          <nz-upload [nzAction]="uploadPath" style="float: left; margin-right: 10px;" >
+          <nz-upload [nzAction]="uploadPath" [nzFileList]="consumerList" (nzChange)="handleChange($event)" style="float: left; margin-right: 10px;" >
             <button nz-button><i nz-icon nzType="upload"></i><span>上传文件</span></button>
           </nz-upload>
         </div>
         <div class="title">配置</div>
-        <button nz-button (click)="addRow()" nzType="primary">Add</button>
+        <button nz-button (click)="addRow()" nzType="primary" style="float: right;margin-bottom: 10px; z-index: 999;">Add</button>
         <nz-table #basicTable nzBordered [nzData]="configuration">
           <thead>
           <tr>
-            <th nzWidth="30%">Key</th>
-            <th >Value</th>
+            <th nzWidth="30%">配置项</th>
+            <th>配置内容</th>
             <th>操作</th>
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let data of basicTable.data">
-            <td (click)="startEdit(data.id)"></td>
-            <td></td>
-            <td>Delete</td>
+          <tr *ngFor="let data of basicTable.data" class="editable-row">
+            <td>
+              <div class="editable-cell" (click)="startEdit(data.id)">
+                {{ data.name }}
+              </div>
+              <input type="text" nz-input [(ngModel)]="data.key" (blur)="stopEdit()" [placeholder]="'Key'+ data.id"/>
+            </td>
+            <td>
+              <input type="text" nz-input [(ngModel)]="data.value" (blur)="stopEdit()" [placeholder]="'Value'+ data.id"/>
+            </td>
+            <td>
+              <a nz-popconfirm nzPopconfirmTitle="确认删除?" (nzOnConfirm)="deleteRow(data.id)">Delete</a>
+            </td>
           </tr>
           </tbody>
         </nz-table>
+        <button nz-button (click)="saveConsumer()" nzType="primary" style="float: right;margin-bottom: 10px; z-index: 999;">确定</button>
       </div>
     </nz-tab>
   </nz-tabset>

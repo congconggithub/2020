@@ -13,7 +13,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
 import { UploadFile, UploadXHRArgs } from 'ng-zorro-antd/upload';
 import {HTTP_BASE} from '../../config';
 import * as _ from 'lodash';
-
+import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
@@ -36,6 +36,8 @@ export class DetailComponent implements OnInit {
   created;
   listOfData: any = [];
   treeList : any = [];
+  cloneTreeList : any = [];
+
   classifying = '';
   classifyingData = [];
   priorityInput: number;
@@ -45,6 +47,7 @@ export class DetailComponent implements OnInit {
   uploadDesc = '' ; // 上传描述
   uploading = false ; // 上传loading状态
   uploadPath = '';
+  consumerList = [];
   configuration= [];   // 配置
   i = 0;
   editId: string | null = null;
@@ -79,22 +82,25 @@ export class DetailComponent implements OnInit {
     this.uploadPath =  HTTP_BASE + '/v2/channels/'+ this.id +'/program';
 
     this.loadCategory();
+    this.loadConsumer();
   }
 
   loadCategory(){
     this.detailService.loadClassify(this.id).then(res => {
       let re = [res]
-      console.log(re);
-      console.log(res , 'res');
       this.listOfData = re;
       this.treeList = _.cloneDeep(this.listOfData);
-
       this.treeList.forEach(l => {
         l['title'] = l['name'] + '（权重：' + l['priority'] + '）';
         l['key'] = l['id'];
         l['children'] = l['categories']
         this.changeProp(l);
       })
+    })
+  }
+
+  loadConsumer(){
+    this.detailService.getConsumer(this.id).then(re => {
     })
   }
   changeProp(data){
@@ -129,6 +135,8 @@ export class DetailComponent implements OnInit {
   }
 
   nzEvent(event: NzFormatEmitEvent): void {
+    // this.detailItem = {};
+
     this.detailItem = {pid : event.node.origin.id};
     this.modifyModal = this.modalService.create({
       nzTitle: '新增分类',
@@ -145,15 +153,14 @@ export class DetailComponent implements OnInit {
   }
 
   saveData(item){
-    console.log(item , 'item');
     let param = {
       name: item['classifying'],
       priority: item['priorityInput'],
       pid: item['pid']
     }
-    this.findParent(this.listOfData , param);
-    console.log(this.listOfData , 'this.listOfData');
-    let paramData = this.listOfData[0];
+    this.findParent(this.treeList , param );
+    this.removeExcess(this.treeList);
+    let paramData = this.treeList[0];
     this.detailService.saveClassify(paramData)
       .then((item: any) => {
         this.classifying = '';
@@ -163,48 +170,87 @@ export class DetailComponent implements OnInit {
   }
 
   findParent(list , data ){
+
     list.forEach(e => {
-      delete e.selected;
-      delete e.key;
-      delete e.title;
-      if( e.id === data.pid){
+
+      if( e.id === data.pid  ){
+
         if( e['categories']){
-          console.log(e , 111);
           e['categories'].push(data);
         }else {
           e['categories'] = [data];
         }
-        delete data.pid;
-        return;
-      }else if(e['categories'] && e['categories'].length > 0){
-        console.log(e , 2);
-        this.findParent(e['categories'] , data);
-        if(data.pid) delete data.pid;
-        e['categories'].push(data);
-        return ;
-      }else {
-        console.log(3);
-        if(data.pid) {delete data.pid};
-        this.listOfData.push(data);
-        return;
+        return list;
+      }else if( (e['categories'] )&& (e['categories'].length > 0) &&(e.id !== data.pid)){
+        this.findParent(e['categories'] , data );
+        // e['categories'].push(data);
+        return list;
       }
     })
+
+  }
+
+  removeExcess(list){
+    list.forEach(e => {
+      if(e.selected) delete e.selected;
+      if(e.key) delete e.key;
+      if(e.title) delete e.title;
+      // if(e.children) delete e.children;
+      delete e.children;
+      if(e.expanded) delete e.expanded;
+      if(e.pid) delete e.pid;
+      if(e['categories']){
+        this.removeExcess(e['categories'])
+      }
+    })
+  }
+
+  handleChange(info: NzUploadChangeParam): void {
+    let consumerList = [...info.fileList];      //  ???   let consumerList = [...info.consumerList];
+    consumerList = consumerList.slice(-1);
+    consumerList = consumerList.map(file => {
+      if (file.response) {
+        file.url = file.response.url;
+      }
+      return file;
+    });
+    this.consumerList = consumerList;
   }
 
   startEdit(id: string): void {
     this.editId = id;
   }
 
+  stopEdit(): void {
+    this.editId = null;
+  }
+
   addRow(): void {
     this.configuration = [
       ...this.configuration,
       {
-        key: `${this.i}`,
-        value: `Edward King ${this.i}`,
+        id: `${this.i}`,
+        key: ``,
+        value: ``,
       }
     ];
     this.i++;
   }
+
+  deleteRow(id: string): void {
+    this.configuration = this.configuration.filter(d => d.id !== id);
+  }
+
+  saveConsumer(){
+    console.log(this.configuration , 'this.configuration');
+    let paramData = {
+    }
+    this.detailService.upload(paramData)
+      .then((item: any) => {
+
+      })
+  }
+
 
 
 

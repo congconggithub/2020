@@ -19,8 +19,11 @@ export class DetailService {
   }
 
   loadClassify(param){
-    console.log(HTTP_BASE + '/v2/channels/' + param + '/categories'  , ' 5555');
     return this.http.get(this.common.createURL(HTTP_BASE + '/v2/channels/' + param + '/categories', param)).toPromise();
+  }
+
+  getConsumer(param){
+    return this.http.get(this.common.createURL(HTTP_BASE + '/v2/channels/' + param + '/program', param)).toPromise();
   }
 
   upload(param:any){

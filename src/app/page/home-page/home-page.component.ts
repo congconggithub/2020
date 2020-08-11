@@ -68,8 +68,6 @@ export class HomePageComponent implements OnInit {
   }
 
   saveData(item){
-    item['created'] = moment().format('x');
-    item['state'] = false;
     this.homeService.saveData(item)
       .then( res => {
         this.notification.create('success', '新增成功', '');
