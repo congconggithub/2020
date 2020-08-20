@@ -26,8 +26,8 @@ export class DetailService {
     return this.http.get(this.common.createURL(HTTP_BASE + '/v2/channels/' + param + '/program', param)).toPromise();
   }
 
-  upload(param:any){
-    return this.http.post(HTTP_BASE+'/v2/channels/' + param.id + '/program', param).toPromise()
+  upload(paramId , param:any){
+    return this.http.post(HTTP_BASE+'/v2/channels/' + paramId + '/program', param).toPromise()
   }
 
 

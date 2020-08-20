@@ -18,6 +18,7 @@ import {HomePageModule} from './page/home-page/home-page.module';
 import {LayoutModule} from './components/common/layout.module';
 import {DetailModule} from './page/detail/detail.module';
 import {JobModule} from './page/job/job.module';
+import {JobSlotModule} from './page/job-slot/job-slot.module';
 
 registerLocaleData(zh);
 
@@ -42,7 +43,8 @@ registerLocaleData(zh);
     HomePageModule,
     LayoutModule,
     DetailModule,
-    JobModule
+    JobModule,
+    JobSlotModule
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},

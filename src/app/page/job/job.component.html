@@ -1,20 +1,36 @@
 <div class="page-card">
   <div class="page-title">
     <div nz-row nzJustify="space-around" [nzGutter]="16">
-      <div nz-col nzSpan="4" class="gutter-row">col-4</div>
-      <div nz-col nzSpan="4" class="gutter-row">col-4</div>
-      <div nz-col nzSpan="4" class="gutter-row">col-4</div>
-      <div nz-col nzSpan="4" class="gutter-row">col-4</div>
+      <div nz-col nzSpan="4" class="gutter-row">JOB数量</div>
+      <div nz-col nzSpan="4" class="gutter-row">JOB运行</div>
+      <div nz-col nzSpan="4" class="gutter-row">挂起</div>
+      <div nz-col nzSpan="4" class="gutter-row">TPS</div>
     </div>
   </div>
   <div class="page-content">
     <nz-tabset>
       <nz-tab [nzTitle]="titleTemplate1">
         <ng-template #titleTemplate1> <i nz-icon [nzType]="'unordered-list'"></i></ng-template>
+        <table>
 
+        </table>
       </nz-tab>
       <nz-tab [nzTitle]="titleTemplate2">
         <ng-template #titleTemplate2> <i nz-icon [nzType]="'pie-chart'"></i></ng-template>
+        <div nz-row [nzGutter]="16">
+
+          <div  nz-col class="gutter-row" [nzSpan]="6">
+            <nz-layout>
+              <nz-header>Header</nz-header>
+              <nz-layout>
+                <nz-sider>Sider</nz-sider>
+                <nz-content>Content</nz-content>
+              </nz-layout>
+            </nz-layout>
+          </div>
+
+        </div>
+
       </nz-tab>
     </nz-tabset>
 

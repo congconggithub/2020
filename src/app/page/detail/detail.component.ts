@@ -101,6 +101,14 @@ export class DetailComponent implements OnInit {
 
   loadConsumer(){
     this.detailService.getConsumer(this.id).then(re => {
+            for (var i in re['config']) {
+              let obj = {
+                key: i,
+                value: re['config'][i]
+              }
+              this.consumerList.push(obj);
+            }
+            this.configuration = this.consumerList;
     })
   }
   changeProp(data){
@@ -242,12 +250,20 @@ export class DetailComponent implements OnInit {
   }
 
   saveConsumer(){
-    console.log(this.configuration , 'this.configuration');
+    let  paramDataList = _.cloneDeep(this.configuration);
     let paramData = {
+      config:{
+      }
     }
-    this.detailService.upload(paramData)
-      .then((item: any) => {
+    paramDataList.forEach(p => {
+      paramData['config'][p.key] = p.value
 
+    })
+    console.log(paramData);
+
+    this.detailService.upload(this.id , paramData)
+      .then((item: any) => {
+        this.notification.create('success', '上传成功', '');
       })
   }
 

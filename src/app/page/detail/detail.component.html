@@ -58,13 +58,10 @@
           <tbody>
           <tr *ngFor="let data of basicTable.data" class="editable-row">
             <td>
-              <div class="editable-cell" (click)="startEdit(data.id)">
-                {{ data.name }}
-              </div>
-              <input type="text" nz-input [(ngModel)]="data.key" (blur)="stopEdit()" [placeholder]="'Key'+ data.id"/>
+              <input type="text" nz-input [(ngModel)]="data.key" (blur)="stopEdit()" [placeholder]="'Key'"/>
             </td>
             <td>
-              <input type="text" nz-input [(ngModel)]="data.value" (blur)="stopEdit()" [placeholder]="'Value'+ data.id"/>
+              <input type="text" nz-input [(ngModel)]="data.value" (blur)="stopEdit()" [placeholder]="'Value'"/>
             </td>
             <td>
               <a nz-popconfirm nzPopconfirmTitle="确认删除?" (nzOnConfirm)="deleteRow(data.id)">Delete</a>
